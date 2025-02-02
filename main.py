@@ -330,9 +330,12 @@ def main():
                     if not found:
                         raise ValueError('Classroom with such number does not exist!')
 
+                    valid_grades = ["A", "B", "C", "D", "F"]
                     grade = input("Enter grade to search for: ")
-
-                    search_students_by_grade(found_classroom, grade)
+                    if grade.upper() in valid_grades:
+                        search_students_by_grade(found_classroom, grade)
+                    else:
+                        raise ValueError('Grade "{grade}" is not valid!')
                 except Exception as e:
                     print(f"\nError: {e}\n")
 

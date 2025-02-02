@@ -223,8 +223,6 @@ def main():
                     teacher.subject = teacher_subject
 
                     teachers.append(teacher)
-                    for teacher in teachers:
-                        print(teacher.get_details())
                     print(f'\nTeacher "{teacher.name}" added successfully!\n')
                 except Exception as e:
                     print(f"\nError: {e}\n")
@@ -304,8 +302,37 @@ def main():
 
                 except Exception as e:
                     print(f"\nError: {e}\n")
-            # elif choice == "7":
-            #
+
+            elif choice == "7":
+                try:
+                    classroom_number = int(input("Enter classroom number: "))
+
+                    found = False
+                    found_classroom = Classroom
+                    for classroom in classrooms:
+                        if classroom.room_number == classroom_number:
+                            found_classroom = classroom
+                            found = True
+
+                    if not found:
+                        raise ValueError('Classroom with such number does not exist!')
+
+                    grade = input("Enter grade to search for: ")
+
+                    filtered_students = list(filter(lambda student: student.grade == grade, found_classroom.students))
+
+                    if len(filtered_students):
+                        print(f"Students with grade {grade} in classroom {classroom_number}:")
+                        for i, student in enumerate(filtered_students, 1):
+                            print(f"{i}. {student.name} (ID: {student.student_id})")
+                        print()
+
+                    else:
+                        print("\nNo students found!\n")
+
+                except Exception as e:
+                    print(f"\nError: {e}\n")
+
             elif choice == "8":
                 print("Thank you for using the Mini School Management System!")
                 break

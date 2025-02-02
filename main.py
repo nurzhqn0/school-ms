@@ -130,7 +130,6 @@ class Classroom:
     def teacher(self):
         return self.__teacher
 
-    @teacher.setter
     def set_teacher(self, value):
         if isinstance(value, Teacher):
             self.__teacher = value
@@ -146,8 +145,9 @@ class Classroom:
 
     def get_student_list(self):
         print(f"Classroom {self.__room_number}:")
+        print(f"Teacher {self.__teacher.name}, Subject: {self.__teacher.subject}")
         for i, student in enumerate(self.__students, 1):
-            print(f"{i}. {student}\n")
+            print(f"{student.name} (ID: {student.student_id}, Grade: {student.grade})")
 
 
 def display_menu():
@@ -212,20 +212,75 @@ def main():
                     teacher.subject = teacher_subject
 
                     teachers.append(teacher)
+                    for teacher in teachers:
+                        print(teacher.get_details())
                     print(f'\nTeacher "{teacher.name}" added successfully!\n')
                 except Exception as e:
                     print(f"\nError: {e}\n")
-            # elif choice == "3":
-            #
-            # elif choice == "4":
-            #
-            # elif choice == "5":
+            elif choice == "3":
+                classroom = Classroom(None, [], None)
+
+                try:
+                    classroom_number = int(input("Enter classroom number: "))
+                    is_exist = any(classroom.room_number == classroom_number for classroom in classrooms)
+                    if is_exist:
+                        raise ValueError("Classroom with such number already exists")
+                    classroom.room_number = classroom_number
+
+                    classrooms.append(classroom)
+                    print(f"\nClassroom {classroom.room_number} was successfully created!\n")
+                except Exception as e:
+                    print(f"\nError: {e}\n")
+
+            elif choice == "4":
+                try:
+                    classroom_number = int(input("Enter classroom number: "))
+
+                    teacher_id = int(input("Enter teacher ID to assign: "))
+                    found_teacher = next((teacher for teacher in teachers if teacher.teacher_id == teacher_id), None)
+
+                    if not found_teacher:
+                        raise ValueError('Teacher with such ID does not exist!')
+
+                    found = False
+                    for classroom in classrooms:
+                        if classroom.room_number == classroom_number:
+                            classroom.set_teacher(found_teacher)
+                            found = True
+                            break
+
+                    if found:
+                        print(f'\nTeacher "{found_teacher.name}" assigned to classroom {classroom_number} successfully!\n')
+                    else:
+                        raise ValueError(f'Error: Classroom {classroom_number} not found!')
+                except Exception as e:
+                    print(f"\nError: {e}\n")
+            elif choice == "5":
+                classroom_number = int(input("Enter classroom number: "))
+
+                student_id = int(input("Enter student ID to assign: "))
+                found_student = next((student for student in students if student.student_id == student_id), None)
+
+                if not found_student:
+                    raise ValueError('Student with such ID does not exist!')
+
+                found = False
+                for classroom in classrooms:
+                    if classroom.room_number == classroom_number:
+                        classroom.add_student(found_student)
+                        found = True
+                        break
+
+                if found:
+                    print(f'\nStudent "{found_student.name}" assigned to classroom {classroom_number} successfully!\n')
+                else:
+                    raise ValueError(f'Error: Classroom {classroom_number} not found!')
             #
             # elif choice == "6":
             #
-            # elif choice == "7":
-            #     print("Thank you for using the Mini School Management System!")
-            #     break
+            elif choice == "7":
+                print("Thank you for using the Mini School Management System!")
+                break
             else:
                 print("Invalid option. Please try again.")
 

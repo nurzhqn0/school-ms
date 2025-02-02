@@ -144,10 +144,20 @@ class Classroom:
             raise ValueError("Student must be a non-empty Student")
 
     def get_student_list(self):
-        print(f"Classroom {self.__room_number}:")
-        print(f"Teacher {self.__teacher.name}, Subject: {self.__teacher.subject}")
-        for i, student in enumerate(self.__students, 1):
-            print(f"{student.name} (ID: {student.student_id}, Grade: {student.grade})")
+        print(f"\nClassroom {self.__room_number}:")
+
+        if self.__teacher is not None:
+            print(f"Teacher {self.__teacher.name}, Subject: {self.__teacher.subject}")
+        else:
+            print("No teacher found")
+
+        if len(self.__students) > 0:
+            print(f"Students: ")
+            for i, student in enumerate(self.__students, 1):
+                print(f"{i}. {student.name} (ID: {student.student_id}, Grade: {student.grade})")
+            print()
+        else:
+            print("No students found\n")
 
 
 def display_menu():
@@ -193,6 +203,7 @@ def main():
                     print(f'\nStudent "{student.name}" added successfully!\n')
                 except Exception as e:
                     print(f"\nError: {e}\n")
+
             elif choice == "2":
                 teacher = Teacher(None, None, None, None)
                 try:
@@ -217,6 +228,7 @@ def main():
                     print(f'\nTeacher "{teacher.name}" added successfully!\n')
                 except Exception as e:
                     print(f"\nError: {e}\n")
+
             elif choice == "3":
                 classroom = Classroom(None, [], None)
 
@@ -255,6 +267,7 @@ def main():
                         raise ValueError(f'Error: Classroom {classroom_number} not found!')
                 except Exception as e:
                     print(f"\nError: {e}\n")
+
             elif choice == "5":
                 classroom_number = int(input("Enter classroom number: "))
 
@@ -275,10 +288,25 @@ def main():
                     print(f'\nStudent "{found_student.name}" assigned to classroom {classroom_number} successfully!\n')
                 else:
                     raise ValueError(f'Error: Classroom {classroom_number} not found!')
+
+            elif choice == "6":
+                try:
+                    classroom_number = int(input("Enter classroom number: "))
+
+                    found = False
+                    for classroom in classrooms:
+                        if classroom.room_number == classroom_number:
+                            classroom.get_student_list()
+                            found = True
+
+                    if not found:
+                        raise ValueError('Classroom with such number does not exist!')
+
+                except Exception as e:
+                    print(f"\nError: {e}\n")
+            # elif choice == "7":
             #
-            # elif choice == "6":
-            #
-            elif choice == "7":
+            elif choice == "8":
                 print("Thank you for using the Mini School Management System!")
                 break
             else:

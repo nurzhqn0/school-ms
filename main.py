@@ -160,6 +160,19 @@ class Classroom:
             print("No students found\n")
 
 
+def search_students_by_grade(classroom: Classroom, grade: str) -> list:
+    filtered_students = list(filter(lambda student: student.grade == grade, classroom.students))
+
+    print(f"Students with grade {grade} in classroom {classroom.room_number}:")
+    if len(filtered_students):
+        for i, student in enumerate(filtered_students, 1):
+            print(f"{i}. {student.name} (ID: {student.student_id})")
+        print()
+    else:
+        print("No students found\n")
+
+
+
 def display_menu():
     print("Menu:")
     print("1. Add a student")
@@ -319,17 +332,7 @@ def main():
 
                     grade = input("Enter grade to search for: ")
 
-                    filtered_students = list(filter(lambda student: student.grade == grade, found_classroom.students))
-
-                    if len(filtered_students):
-                        print(f"Students with grade {grade} in classroom {classroom_number}:")
-                        for i, student in enumerate(filtered_students, 1):
-                            print(f"{i}. {student.name} (ID: {student.student_id})")
-                        print()
-
-                    else:
-                        print("\nNo students found!\n")
-
+                    search_students_by_grade(found_classroom, grade)
                 except Exception as e:
                     print(f"\nError: {e}\n")
 
